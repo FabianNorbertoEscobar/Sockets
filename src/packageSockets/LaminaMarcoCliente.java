@@ -36,6 +36,8 @@ public class LaminaMarcoCliente extends JPanel {
 					
 					// cerramos el flujo
 					flujoSalida.close();
+					
+					campo1.setText("");
 				} catch (UnknownHostException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
