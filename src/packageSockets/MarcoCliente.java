@@ -7,9 +7,9 @@ public class MarcoCliente extends JFrame {
 
 	public MarcoCliente() {
 		setResizable(false);
-		setTitle("Cliente");
+		setTitle("Chat");
 
-		setBounds(600, 300, 487, 350);
+		setBounds(600, 300, 291, 350);
 
 		LaminaMarcoCliente milamina = new LaminaMarcoCliente();
 
