@@ -6,12 +6,14 @@ import javax.swing.*;
 public class MarcoCliente extends JFrame {
 
 	public MarcoCliente() {
+		setResizable(false);
+		setTitle("Cliente");
 
-		setBounds(600, 300, 280, 350);
+		setBounds(600, 300, 487, 350);
 
 		LaminaMarcoCliente milamina = new LaminaMarcoCliente();
 
-		add(milamina);
+		getContentPane().add(milamina);
 
 		setVisible(true);
 	}

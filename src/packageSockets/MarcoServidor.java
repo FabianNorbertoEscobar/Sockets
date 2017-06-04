@@ -8,8 +8,10 @@ import javax.swing.*;
 public class MarcoServidor extends JFrame {
 
 public MarcoServidor(){
+	setResizable(false);
+	setTitle("Servidor");
 		
-		setBounds(1200,300,280,350);				
+		setBounds(1200,300,488,350);				
 			
 		JPanel milamina= new JPanel();
 		
@@ -19,7 +21,7 @@ public MarcoServidor(){
 		
 		milamina.add(areatexto,BorderLayout.CENTER);
 		
-		add(milamina);
+		getContentPane().add(milamina);
 		
 		setVisible(true);
 		
