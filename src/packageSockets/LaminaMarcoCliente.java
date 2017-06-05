@@ -4,13 +4,15 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
-public class LaminaMarcoCliente extends JPanel {
+public class LaminaMarcoCliente extends JPanel implements Runnable {
 
 	public LaminaMarcoCliente() {
 
@@ -74,6 +76,37 @@ public class LaminaMarcoCliente extends JPanel {
 
 		add(miboton);
 
+		// instanciamos un nuevo hilo de ejecución y lo arrancamos
+		Thread hilo = new Thread(this);
+		hilo.start();
+	}
+	
+	@Override
+	public void run() {
+		try {
+			// el cliente también necesita un 
+			ServerSocket servidorCliente = new ServerSocket(9090);
+			
+			// variables para almacenar el socket y el paquete que nos envía el servidor
+			Socket socketCliente;
+			PaqueteEnvio paqueteRecibido;
+			
+			// el socket se queda a la escucha de forma infinita
+			while (true) {
+				// se aceptan conexiones del servidor
+				socketCliente = servidorCliente.accept();
+				// se crea un flujo de entrada con el flujo de entrada del socket
+				ObjectInputStream flujoEntrada = new ObjectInputStream(socketCliente.getInputStream());
+				// se carga el paquete recibido desde el flujo de entrada
+				paqueteRecibido = (PaqueteEnvio) flujoEntrada.readObject();
+				
+				// se concatenan los datos del paquete en el textArea
+				campoChat.append("\n" + paqueteRecibido.getNick() + " " + paqueteRecibido.getMsg());
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private JTextField campo1;

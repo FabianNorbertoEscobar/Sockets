@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -85,8 +86,23 @@ public class MarcoServidor extends JFrame implements Runnable {
 				// se concatena el mensaje en el area de texto, con todos los
 				// datos recibidos
 				areatexto.append("\n" + nick + ": " + msg + " para " + ip);
+				
+				// se crea un nuevo socket con los datos del destinatario
+				Socket enviaADestinatario = new Socket(ip, 9090);
+				
+				// se crea un paquete de reenvio con el flujo de salida para objetos del socket del destinatario
+				ObjectOutputStream paqueteReenvio = new ObjectOutputStream(enviaADestinatario.getOutputStream());
+				
+				// se escribe el paquete recibido en el flujo del paquete de reenvio
+				paqueteReenvio.writeObject(paquete);
+				
+				// cierro el flujo
+				paqueteReenvio.close();
+				
+				// se cierra el socket para el destinatario
+				enviaADestinatario.close();
 
-				// se cierra el socket
+				// se cierra el socket del servidor
 				server.close();
 			}
 		} catch (IOException | ClassNotFoundException e) {
