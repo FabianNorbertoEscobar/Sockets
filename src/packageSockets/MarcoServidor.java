@@ -1,7 +1,6 @@
 package packageSockets;
 
 import java.awt.*;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,6 +36,7 @@ public class MarcoServidor extends JFrame implements Runnable {
 
 	private JTextArea areatexto;
 
+	@SuppressWarnings("resource")
 	@Override
 	public void run() {
 		try {

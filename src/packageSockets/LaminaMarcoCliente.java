@@ -2,7 +2,6 @@ package packageSockets;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,6 +33,8 @@ public class LaminaMarcoCliente extends JPanel implements Runnable {
 		miboton = new JButton("Enviar");
 		miboton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				campoChat.append("\n" + campo1.getText());
 				try {
 					// se crea un socket con la ip del servidor y el puerto por
 					// el que nos vamos a comunicar
@@ -81,6 +82,7 @@ public class LaminaMarcoCliente extends JPanel implements Runnable {
 		hilo.start();
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public void run() {
 		try {
