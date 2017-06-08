@@ -57,12 +57,6 @@ public class MarcoServidor extends JFrame implements Runnable {
 				// se crea un socket en el que se aceptan conexiones de clientes
 				// al servidor
 				Socket server = servidor.accept();
-				
-				// obtengo la dirección ip remota del cliente que se conecta
-				InetAddress localizacion = server.getInetAddress();
-				String ipRemota = localizacion.getHostAddress();
-				
-				System.out.println("Online " + ipRemota);
 
 				// se crea un flujo de entrada para objeto con el flujo de
 				// entrada del socket
@@ -89,28 +83,35 @@ public class MarcoServidor extends JFrame implements Runnable {
 				 * msg);
 				 * 
 				 */
+				
+				if (!msg.equals(" online")) {
+					// se concatena el mensaje en el area de texto, con todos los
+					// datos recibidos
+					areatexto.append("\n" + nick + ": " + msg + " para " + ip);
+					
+					// se crea un nuevo socket con los datos del destinatario
+					Socket enviaADestinatario = new Socket(ip, 9090);
+					
+					// se crea un paquete de reenvio con el flujo de salida para objetos del socket del destinatario
+					ObjectOutputStream paqueteReenvio = new ObjectOutputStream(enviaADestinatario.getOutputStream());
+					
+					// se escribe el paquete recibido en el flujo del paquete de reenvio
+					paqueteReenvio.writeObject(paquete);
+					
+					// cierro el flujo
+					paqueteReenvio.close();
+					
+					// se cierra el socket para el destinatario
+					enviaADestinatario.close();
 
-				// se concatena el mensaje en el area de texto, con todos los
-				// datos recibidos
-				areatexto.append("\n" + nick + ": " + msg + " para " + ip);
-				
-				// se crea un nuevo socket con los datos del destinatario
-				Socket enviaADestinatario = new Socket(ip, 9090);
-				
-				// se crea un paquete de reenvio con el flujo de salida para objetos del socket del destinatario
-				ObjectOutputStream paqueteReenvio = new ObjectOutputStream(enviaADestinatario.getOutputStream());
-				
-				// se escribe el paquete recibido en el flujo del paquete de reenvio
-				paqueteReenvio.writeObject(paquete);
-				
-				// cierro el flujo
-				paqueteReenvio.close();
-				
-				// se cierra el socket para el destinatario
-				enviaADestinatario.close();
-
-				// se cierra el socket del servidor
-				server.close();
+					// se cierra el socket del servidor
+					server.close();
+				} else {
+					// obtengo la dirección ip remota del cliente que se conecta
+					InetAddress localizacion = server.getInetAddress();
+					String ipRemota = localizacion.getHostAddress();
+					System.out.println("Online " + ipRemota);
+				}
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
