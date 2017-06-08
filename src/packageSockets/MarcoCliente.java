@@ -16,5 +16,7 @@ public class MarcoCliente extends JFrame {
 		getContentPane().add(milamina);
 
 		setVisible(true);
+		
+		addWindowListener(new EnvioOnline());
 	}
 }

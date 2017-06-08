@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -43,19 +44,25 @@ public class MarcoServidor extends JFrame implements Runnable {
 			// se crea un socket servidor que quedará a la escucha por el puerto
 			// 9999
 			ServerSocket servidor = new ServerSocket(9999);
+			
+			// variable para leer los datos recibidos
+			String nick, ip, msg;
+
+			// se instancia un nuevo paquete donde recibiré el paquete que
+			// me envían
+			PaqueteEnvio paquete;
 
 			// se aceptarán conexiones de forma infinita
 			while (true) {
 				// se crea un socket en el que se aceptan conexiones de clientes
 				// al servidor
 				Socket server = servidor.accept();
-
-				// variable para leer los datos recibidos
-				String nick, ip, msg;
-
-				// se instancia un nuevo paquete donde recibiré el paquete que
-				// me envían
-				PaqueteEnvio paquete;
+				
+				// obtengo la dirección ip remota del cliente que se conecta
+				InetAddress localizacion = server.getInetAddress();
+				String ipRemota = localizacion.getHostAddress();
+				
+				System.out.println("Online " + ipRemota);
 
 				// se crea un flujo de entrada para objeto con el flujo de
 				// entrada del socket
