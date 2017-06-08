@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
@@ -94,7 +95,7 @@ public class LaminaMarcoCliente extends JPanel implements Runnable {
 		hilo.start();
 	}
 	
-	@SuppressWarnings("resource")
+	@SuppressWarnings({ "resource", "unchecked" })
 	@Override
 	public void run() {
 		try {
@@ -114,8 +115,25 @@ public class LaminaMarcoCliente extends JPanel implements Runnable {
 				// se carga el paquete recibido desde el flujo de entrada
 				paqueteRecibido = (PaqueteEnvio) flujoEntrada.readObject();
 				
-				// se concatenan los datos del paquete en el textArea
-				campoChat.append("\n" + paqueteRecibido.getNick() + " " + paqueteRecibido.getMsg());
+				if (!paqueteRecibido.getMsg().equals(" online")) {
+					// se concatenan los datos del paquete en el textArea
+					campoChat.append("\n" + paqueteRecibido.getNick() + " " + paqueteRecibido.getMsg());
+				} else {
+					// campoChat.append("\n" + paqueteRecibido.getIps());
+					
+					// creamos una lista con las ip recibidas del mensaje
+					ArrayList<String> ipsMenu = new ArrayList<String>();
+					ipsMenu = paqueteRecibido.getIps();
+					
+					// borra todos los ítems al menu de las ip
+					ip.removeAllItems();
+					
+					// carga en los ítems del menú la lista de ip actualizada
+					for (String z: ipsMenu) {
+						ip.addItem(z);
+					}
+				}
+				
 			}
 			
 		} catch (Exception e) {

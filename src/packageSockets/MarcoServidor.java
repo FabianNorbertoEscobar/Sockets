@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -47,6 +48,9 @@ public class MarcoServidor extends JFrame implements Runnable {
 			
 			// variable para leer los datos recibidos
 			String nick, ip, msg;
+			
+			// creo una lista para guardar las ips de los clientes que se conectan
+			ArrayList<String> listaIp = new ArrayList<String>();
 
 			// se instancia un nuevo paquete donde recibiré el paquete que
 			// me envían
@@ -111,6 +115,33 @@ public class MarcoServidor extends JFrame implements Runnable {
 					InetAddress localizacion = server.getInetAddress();
 					String ipRemota = localizacion.getHostAddress();
 					System.out.println("Online " + ipRemota);
+					
+					// agrego la ip del nuevo cliente conectado a la lista de ips
+					listaIp.add(ipRemota);
+					// agrego la lista de ips al paquete
+					paquete.setIps(listaIp);
+					
+					for (String z: listaIp) {
+						System.out.println("Array: " + z);
+						
+						// se crea un nuevo socket con los datos del destinatario
+						Socket enviaADestinatario = new Socket(z, 9090);
+						
+						// se crea un paquete de reenvio con el flujo de salida para objetos del socket del destinatario
+						ObjectOutputStream paqueteReenvio = new ObjectOutputStream(enviaADestinatario.getOutputStream());
+						
+						// se escribe el paquete recibido en el flujo del paquete de reenvio
+						paqueteReenvio.writeObject(paquete);
+						
+						// cierro el flujo
+						paqueteReenvio.close();
+						
+						// se cierra el socket para el destinatario
+						enviaADestinatario.close();
+
+						// se cierra el socket del servidor
+						server.close();
+					}
 				}
 			}
 		} catch (IOException | ClassNotFoundException e) {
