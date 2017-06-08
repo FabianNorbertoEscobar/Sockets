@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 public class LaminaMarcoCliente extends JPanel implements Runnable {
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	public LaminaMarcoCliente() {
 		
 		String nickUsuario = JOptionPane.showInputDialog("Nick: ");
@@ -30,11 +30,6 @@ public class LaminaMarcoCliente extends JPanel implements Runnable {
 		add(texto);
 
 		ip = new JComboBox();
-		ip.addItem("Usuario 1");
-		ip.addItem("Usuario 2");
-		ip.addItem("Usuario 3");
-		ip.addItem("Usuario 4");
-		ip.addItem("Usuario 5");
 		add(ip);
 
 		campoChat = new JTextArea(12, 20);
