@@ -13,15 +13,27 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 public class LaminaMarcoCliente extends JPanel implements Runnable {
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public LaminaMarcoCliente() {
+		
+		String nickUsuario = JOptionPane.showInputDialog("Nick: ");
+		
+		JLabel n_nick = new JLabel("Nick: ");
+		add(n_nick);
 
-		nick = new JTextField(5);
+		nick = new JLabel();
+		nick.setText(nickUsuario);
 		add(nick);
 
-		JLabel texto = new JLabel("CHAT");
+		JLabel texto = new JLabel("Online: ");
 		add(texto);
 
-		ip = new JTextField(8);
+		ip = new JComboBox();
+		ip.addItem("Usuario 1");
+		ip.addItem("Usuario 2");
+		ip.addItem("Usuario 3");
+		ip.addItem("Usuario 4");
+		ip.addItem("Usuario 5");
 		add(ip);
 
 		campoChat = new JTextArea(12, 20);
@@ -44,7 +56,7 @@ public class LaminaMarcoCliente extends JPanel implements Runnable {
 					PaqueteEnvio paquete = new PaqueteEnvio();
 					// empaquetamos los datos a enviar
 					paquete.setNick(nick.getText());
-					paquete.setIp(ip.getText());
+					paquete.setIp(ip.getSelectedItem().toString());
 					paquete.setMsg(campo1.getText());
 					
 					// creamos un flujo de salida para objetos con el flujo de salida del socket
@@ -112,8 +124,9 @@ public class LaminaMarcoCliente extends JPanel implements Runnable {
 	}
 
 	private JTextField campo1;
-	private JTextField nick;
-	private JTextField ip;
+	private JLabel nick;
+	@SuppressWarnings("rawtypes")
+	private JComboBox ip;
 	private JTextArea campoChat;
 	private JButton miboton;
 }
